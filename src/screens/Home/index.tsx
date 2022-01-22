@@ -1,20 +1,13 @@
-import React, { FC, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import React, { FC } from 'react';
+
+import { Container, Text } from './styles';
 
 const HomeScreen: FC = () => {
   return (
-    <View style={styles.container}>
+    <Container>
       <Text>Home screen</Text>
-    </View>
+    </Container>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center'
-  }
-});
 
 export default HomeScreen;

@@ -15,7 +15,7 @@ const Router = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="Home"
+          name="Tabs"
           component={TabNavigation}
           options={{
             headerShown: false,

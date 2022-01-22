@@ -3,6 +3,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 import HomeScreen from '../../screens/Home';
+import ProfileScreen from '../../screens/Profile';
+import ChatScreen from '../../screens/Chat';
 import { theme } from '../../theme';
 
 const Tab = createMaterialBottomTabNavigator();
@@ -26,26 +28,18 @@ const TabNavigation = () => (
       }}
     />
     <Tab.Screen
-      name="Search"
-      component={HomeScreen}
+      name="Chat"
+      component={ChatScreen}
       options={{
-        tabBarLabel: 'Search',
-        tabBarIcon: ({ color }) => <Ionicons name="search" color={color} size={26} />
+        tabBarLabel: 'Chat',
+        tabBarIcon: ({ color }) => <Ionicons name="chatbox-sharp" color={color} size={26} />
       }}
     />
     <Tab.Screen
-      name="Order"
-      component={HomeScreen}
+      name="Profile"
+      component={ProfileScreen}
       options={{
-        tabBarLabel: 'Order',
-        tabBarIcon: ({ color }) => <Ionicons name="time" color={color} size={26} />
-      }}
-    />
-    <Tab.Screen
-      name="Account"
-      component={HomeScreen}
-      options={{
-        tabBarLabel: 'Account',
+        tabBarLabel: 'Profile',
         tabBarIcon: ({ color }) => <Ionicons name="person" color={color} size={26} />
       }}
     />
