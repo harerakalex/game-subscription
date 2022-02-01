@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  Platform,
-  KeyboardAvoidingView,
-  KeyboardType
-} from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Platform, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { theme } from '../../theme';
