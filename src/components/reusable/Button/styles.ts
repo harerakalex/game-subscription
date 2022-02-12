@@ -6,12 +6,13 @@ interface IButtonContainerProps {
   width: string;
   marginTop: string;
   marginBottom: string;
+  bgColor: string;
 }
 
 export const ButtonContainer = styled.TouchableOpacity<IButtonContainerProps>`
   width: ${props => props.width};
   align-items: center;
-  background-color: ${props => (props.disabled ? theme.colors.secondary : theme.colors.primary)};
+  background-color: ${props => (props.disabled ? theme.colors.secondary : props.bgColor)};
   padding: 10px 0;
   border-width: 1px;
   border-radius: 25px;

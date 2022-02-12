@@ -7,7 +7,9 @@ import {
 } from '@react-navigation/stack';
 
 import TabNavigation from '../Tabs';
+import DrawerNavigation from '../Drawers';
 import LoginScreen from '../../screens/Login';
+import SignupScreen from '../../screens/Signup';
 
 const Stack = createStackNavigator();
 
@@ -25,15 +27,33 @@ const Router = () => {
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
           })}
         />
+        <Stack.Screen
+          name="Signup"
+          component={SignupScreen}
+          options={({ route }: any) => ({
+            headerShown: false,
+            headerStyleInterpolator: HeaderStyleInterpolators.forSlideLeft,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+          })}
+        />
 
         {/* TABS SCREEN */}
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Tabs"
           component={TabNavigation}
           options={{
             headerShown: false,
             headerStyleInterpolator: HeaderStyleInterpolators.forSlideLeft,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+          }}
+        /> */}
+
+        <Stack.Screen
+          name="Drawers"
+          component={DrawerNavigation}
+          options={{
+            headerShown: false
+            // headerTintColor: '#fff'
           }}
         />
       </Stack.Navigator>

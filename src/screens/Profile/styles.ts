@@ -33,7 +33,6 @@ export const ProfilePicture = styled.Image`
   height: 100px;
   border-width: 1px;
   border-color: ${theme.colors.gray};
-  border-style: solid;
   border-radius: 50px;
 `;
 

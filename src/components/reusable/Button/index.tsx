@@ -11,11 +11,13 @@ interface Props {
   marginBottom?: string;
   disabled?: boolean;
   isLoading?: boolean;
+  bgColor?: string;
   pressHandler: () => void;
 }
 
 const Button: FC<Props> = props => {
-  const { label, pressHandler, width, marginTop, marginBottom, disabled, isLoading } = props;
+  const { label, pressHandler, width, marginTop, marginBottom, disabled, isLoading, bgColor } =
+    props;
 
   const [isDisabled = disabled, setIsDisabled] = useState<boolean>();
 
@@ -30,11 +32,12 @@ const Button: FC<Props> = props => {
 
   return (
     <ButtonContainer
-      width={width || '50%'}
+      width={width || 'auto'}
       marginTop={marginTop || '0px'}
       marginBottom={marginBottom || '10px'}
       onPress={pressHandler}
       disabled={isDisabled || false}
+      bgColor={bgColor || theme.colors.primary}
     >
       {isLoading ? renderLoader() : <ButtonText>{label}</ButtonText>}
     </ButtonContainer>

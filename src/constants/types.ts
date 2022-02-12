@@ -13,3 +13,7 @@ export type AutoCompleteType =
   | 'username'
   | 'off'
   | undefined;
+
+export type TextTransformType = 'capitalize' | 'uppercase' | 'lowercase' | 'none';
+
+export type TextAlignmentType = 'left' | 'center' | 'right';

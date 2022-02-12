@@ -9,23 +9,24 @@ import Link from '../../components/reusable/Link';
 
 const { height } = Dimensions.get('window');
 
-const LoginScreen = () => {
+const SignupScreen = () => {
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading = false, setLoading] = useState<boolean>();
 
   const navigation = useNavigation<any>();
 
-  const handleLogin = async () => {
+  const handleSignup = async () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      // if (email === 'hareraloston@gmail.com' || email === 'carlos') {
-      //   if (password === 'butare') {
-      //     navigation.replace('Drawers', { screen: 'HomeScreen' });
-      //   }
-      // }
-      navigation.replace('Drawers', { screen: 'HomeScreen' });
+      if (email === 'hareraloston@gmail.com' || email === 'carlos') {
+        if (password === 'butare') {
+          navigation.replace('Tabs');
+        }
+      }
     }, 5000);
   };
 
@@ -33,12 +34,20 @@ const LoginScreen = () => {
     <View style={styles.container}>
       <View style={styles.mainWrapper}>
         <View>
-          <Text style={styles.title}>Welcome Back!</Text>
-          <Text style={styles.titleDescription}>Login into your account</Text>
+          <Text style={styles.title}>Welcome onboard!</Text>
+          <Text style={styles.titleDescription}>
+            Make profits from helping us advertize our games
+          </Text>
         </View>
         <View>
           <View style={styles.contentWrapper}>
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+              <InputBox
+                value={fullName}
+                placeholder={'Full name'}
+                onChangeText={fullName => setFullName(fullName)}
+                autoComplete="name"
+              />
               <InputBox
                 value={email}
                 placeholder={'Email'}
@@ -52,16 +61,22 @@ const LoginScreen = () => {
                 secureText={true}
                 onChangeText={password => setPassword(password)}
               />
+              <InputBox
+                value={confirmPassword}
+                placeholder={'Confirm Password'}
+                secureText={true}
+                onChangeText={confirmPassword => setConfirmPassword(confirmPassword)}
+              />
               <View style={styles.forgetPWDContainer}>
                 <Link
                   label="Forget password?"
                   pressHandler={() => console.log('Forget Passowrd')}
                 />
               </View>
-              <Button label="Login" pressHandler={handleLogin} isLoading={loading} />
+              <Button label="Register" pressHandler={handleSignup} isLoading={loading} />
               <View style={styles.noAccountContainer}>
-                <Text style={styles.noAccountText}>Don't have an account? </Text>
-                <Link label="Sign Up" pressHandler={() => navigation.navigate('Signup')} />
+                <Text style={styles.noAccountText}>Already have an account? </Text>
+                <Link label="Login" pressHandler={() => navigation.navigate('Login')} />
               </View>
             </KeyboardAvoidingView>
           </View>
@@ -114,4 +129,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default LoginScreen;
+export default SignupScreen;
