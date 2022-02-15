@@ -6,7 +6,7 @@ export const Container = styled.View`
   flex: 1;
 `;
 
-export const Item = styled.TouchableOpacity`
+export const Item = styled.View`
   display: flex;
   flex-direction: row;
   background-color: ${theme.colors.white};
@@ -24,4 +24,5 @@ export const PackageTextWrapper = styled.View`
   display: flex;
   width: 70%;
   padding-left: 5px;
+  padding-right: 2px;
 `;
