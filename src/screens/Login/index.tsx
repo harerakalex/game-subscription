@@ -28,14 +28,13 @@ const LoginScreen = () => {
       const { token } = user;
 
       (async () => {
-        await storeToken(token as string);
+        if (token) await storeToken(token);
       })();
 
       return navigation.replace('Drawers', { screen: 'HomeScreen' });
     }
 
     if (errorLogin) {
-      console.log('Errors====', errorLogin);
       toast(EToastType.ERROR, 'Bad request', errorLogin);
     }
   }, [user, errorLogin]);

@@ -1,33 +1,78 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Dimensions, Platform, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { theme } from '../../theme';
 import InputBox from '../../components/reusable/InputBox';
 import Button from '../../components/reusable/Button';
 import Link from '../../components/reusable/Link';
+import { RootState } from '../../redux';
+import { EToastType, toast } from '../../utils';
+import { LOGOUT_SUCCESS } from '../../redux/action-types/logout';
+import { RegisterAction } from '../../redux/actions/register';
 
 const { height } = Dimensions.get('window');
 
 const SignupScreen = () => {
-  const [fullName, setFullName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [loading = false, setLoading] = useState<boolean>();
 
   const navigation = useNavigation<any>();
 
+  const dispatch = useDispatch();
+
+  const { user, errorRegister, registerLoading } = useSelector((state: RootState) => state.users);
+
+  useEffect(() => {
+    if (user) {
+      toast(EToastType.SUCCESS, 'Message', 'You have been successfull registered, Please login');
+
+      // Clean  the store
+      dispatch({
+        type: LOGOUT_SUCCESS,
+        payload: { defaultValue: undefined }
+      });
+
+      return navigation.replace('Login');
+    }
+
+    if (errorRegister) {
+      toast(EToastType.ERROR, 'Bad request', errorRegister);
+    }
+  }, [user, errorRegister]);
+
   const handleSignup = async () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      if (email === 'hareraloston@gmail.com' || email === 'carlos') {
-        if (password === 'butare') {
-          navigation.replace('Tabs');
-        }
-      }
-    }, 5000);
+    const taostTitle = 'Bad Request';
+
+    if (!firstName) {
+      return toast(EToastType.ERROR, taostTitle, 'First name is Required');
+    }
+
+    if (!lastName) {
+      return toast(EToastType.ERROR, taostTitle, 'Last name is required');
+    }
+
+    if (!email) {
+      return toast(EToastType.ERROR, taostTitle, 'Email is Required');
+    }
+
+    if (!password) {
+      return toast(EToastType.ERROR, taostTitle, 'Password is required');
+    }
+
+    if (!confirmPassword) {
+      return toast(EToastType.ERROR, taostTitle, 'Confirming password is Required');
+    }
+
+    if (password !== confirmPassword) {
+      return toast(EToastType.ERROR, taostTitle, 'Password do not match!');
+    }
+
+    RegisterAction({ firstName, lastName, email, password })(dispatch);
   };
 
   return (
@@ -43,9 +88,15 @@ const SignupScreen = () => {
           <View style={styles.contentWrapper}>
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
               <InputBox
-                value={fullName}
-                placeholder={'Full name'}
-                onChangeText={fullName => setFullName(fullName)}
+                value={firstName}
+                placeholder={'First name'}
+                onChangeText={firstName => setFirstName(firstName)}
+                autoComplete="name"
+              />
+              <InputBox
+                value={lastName}
+                placeholder={'Last name'}
+                onChangeText={lastName => setLastName(lastName)}
                 autoComplete="name"
               />
               <InputBox
@@ -67,13 +118,13 @@ const SignupScreen = () => {
                 secureText={true}
                 onChangeText={confirmPassword => setConfirmPassword(confirmPassword)}
               />
-              <View style={styles.forgetPWDContainer}>
-                <Link
-                  label="Forget password?"
-                  pressHandler={() => console.log('Forget Passowrd')}
-                />
-              </View>
-              <Button label="Register" pressHandler={handleSignup} isLoading={loading} />
+
+              <Button
+                label="Register"
+                pressHandler={handleSignup}
+                isLoading={registerLoading}
+                marginTop="10px"
+              />
               <View style={styles.noAccountContainer}>
                 <Text style={styles.noAccountText}>Already have an account? </Text>
                 <Link label="Login" pressHandler={() => navigation.navigate('Login')} />

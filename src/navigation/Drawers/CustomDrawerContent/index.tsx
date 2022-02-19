@@ -25,7 +25,7 @@ const CustomDrawerContent: FC<Props> = ({ props }) => {
   const handleLogout = async () => {
     await removeToken();
 
-    toast(EToastType.ERROR, 'Message', 'Successfully logged out');
+    toast(EToastType.SUCCESS, 'Message', 'Successfully logged out');
 
     dispatch({
       type: LOGOUT_SUCCESS,

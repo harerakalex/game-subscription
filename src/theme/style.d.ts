@@ -20,7 +20,6 @@ declare module 'styled-components' {
       success: string;
       backgroundOverlay: string;
       appBackground: string;
-      category: string;
       priceAndAttribute: string;
       initiatedOrderborderColor: string;
       initiatedOrderBackgroundColor: string;
