@@ -10,10 +10,12 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.16.1",
     "@react-navigation/drawer": "^6.1.8",
     "@react-navigation/material-bottom-tabs": "^6.0.9",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/stack": "^6.0.11",
+    "axios": "^0.26.0",
     "expo": "~44.0.0",
     "expo-av": "~10.2.0",
     "expo-linear-gradient": "^11.0.3",
@@ -27,7 +29,12 @@
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.10.2",
     "react-native-svg-transformer": "^1.0.0",
+    "react-native-toast-message": "^2.1.1",
     "react-native-web": "0.17.1",
+    "react-redux": "^7.2.6",
+    "redux": "^4.1.2",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.4.1",
     "styled-components": "^5.3.3"
   },
   "devDependencies": {

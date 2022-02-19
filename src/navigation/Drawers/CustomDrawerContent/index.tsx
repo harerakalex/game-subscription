@@ -2,10 +2,13 @@ import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { DrawerItem } from '@react-navigation/drawer';
 import { MaterialIcons, Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import { useDispatch } from 'react-redux';
 
 import Background from '../../../components/reusable/Background';
 import { theme } from '../../../theme';
 import { Text } from '../../../components/reusable/styled';
+import { EToastType, removeToken, toast } from '../../../utils';
+import { LOGOUT_SUCCESS } from '../../../redux/action-types/logout';
 
 interface Props {
   props: any;
@@ -13,9 +16,25 @@ interface Props {
 const CustomDrawerContent: FC<Props> = ({ props }) => {
   const { navigation, state } = props;
   const { routes, index } = state;
-  const focusedRoute = routes[index].name;
+  // const focusedRoute = routes[index].name;
   // console.log('Props===', props);
-  console.log('Active route===', focusedRoute);
+  // console.log('Active route===', focusedRoute);
+
+  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+    await removeToken();
+
+    toast(EToastType.ERROR, 'Message', 'Successfully logged out');
+
+    dispatch({
+      type: LOGOUT_SUCCESS,
+      payload: { defaultValue: undefined }
+    });
+
+    return navigation.replace('Login');
+  };
+
   return (
     <Background>
       <>
@@ -60,7 +79,7 @@ const CustomDrawerContent: FC<Props> = ({ props }) => {
             icon={({ focused, color }) => (
               <MaterialIcons name="logout" size={24} color={theme.colors.danger} />
             )}
-            onPress={() => navigation.replace('Login')}
+            onPress={handleLogout}
             inactiveTintColor={theme.colors.white}
             activeTintColor={theme.colors.link}
           />

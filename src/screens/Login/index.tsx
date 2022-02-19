@@ -1,32 +1,56 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Dimensions, Platform, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { theme } from '../../theme';
 import InputBox from '../../components/reusable/InputBox';
 import Button from '../../components/reusable/Button';
 import Link from '../../components/reusable/Link';
+import { RootState } from '../../redux';
+import { LoginAction } from '../../redux/actions/login';
+import { EToastType, storeToken, toast } from '../../utils';
 
 const { height } = Dimensions.get('window');
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading = false, setLoading] = useState<boolean>();
 
   const navigation = useNavigation<any>();
 
+  const dispatch = useDispatch();
+
+  const { user, loginLoading, errorLogin } = useSelector((state: RootState) => state.users);
+
+  useEffect(() => {
+    if (user) {
+      const { token } = user;
+
+      (async () => {
+        await storeToken(token as string);
+      })();
+
+      return navigation.replace('Drawers', { screen: 'HomeScreen' });
+    }
+
+    if (errorLogin) {
+      console.log('Errors====', errorLogin);
+      toast(EToastType.ERROR, 'Bad request', errorLogin);
+    }
+  }, [user, errorLogin]);
+
   const handleLogin = async () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      // if (email === 'hareraloston@gmail.com' || email === 'carlos') {
-      //   if (password === 'butare') {
-      //     navigation.replace('Drawers', { screen: 'HomeScreen' });
-      //   }
-      // }
-      navigation.replace('Drawers', { screen: 'HomeScreen' });
-    }, 5000);
+    const taostTitle = 'Bad Request';
+    if (!email) {
+      return toast(EToastType.ERROR, taostTitle, 'Email is Required');
+    }
+
+    if (!password) {
+      return toast(EToastType.ERROR, taostTitle, 'Password is required');
+    }
+
+    LoginAction({ email, password })(dispatch);
   };
 
   return (
@@ -58,7 +82,7 @@ const LoginScreen = () => {
                   pressHandler={() => console.log('Forget Passowrd')}
                 />
               </View>
-              <Button label="Login" pressHandler={handleLogin} isLoading={loading} />
+              <Button label="Login" pressHandler={handleLogin} isLoading={loginLoading} />
               <View style={styles.noAccountContainer}>
                 <Text style={styles.noAccountText}>Don't have an account? </Text>
                 <Link label="Sign Up" pressHandler={() => navigation.navigate('Signup')} />
