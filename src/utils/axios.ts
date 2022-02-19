@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BACKEND_URL = 'http://830e-2c0f-eb68-22d-4d00-c1ca-8ffc-a73c-5cee.ngrok.io/api/v1';
+const BACKEND_URL = 'http://930a-2c0f-eb68-22d-4d00-3b5f-7276-2296-943d.ngrok.io/api/v1';
 const http = axios.create({
   baseURL: BACKEND_URL,
   headers: {

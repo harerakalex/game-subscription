@@ -1,14 +1,8 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 
-import { theme } from '../../../theme';
-
 const CustomStatusBar = () => {
-  return (
-    <>
-      <StatusBar style="auto" backgroundColor={theme.colors.white} />
-    </>
-  );
+  return <StatusBar style="light" />;
 };
 
 export default CustomStatusBar;
