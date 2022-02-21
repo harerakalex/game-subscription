@@ -90,19 +90,19 @@ const SignupScreen = () => {
               <InputBox
                 value={firstName}
                 placeholder={'First name'}
-                onChangeText={firstName => setFirstName(firstName)}
+                onChangeText={firstName => setFirstName(firstName.trim())}
                 autoComplete="name"
               />
               <InputBox
                 value={lastName}
                 placeholder={'Last name'}
-                onChangeText={lastName => setLastName(lastName)}
+                onChangeText={lastName => setLastName(lastName.trim())}
                 autoComplete="name"
               />
               <InputBox
                 value={email}
                 placeholder={'Email'}
-                onChangeText={email => setEmail(email)}
+                onChangeText={email => setEmail(email.trim())}
                 keyboardType="email-address"
                 autoComplete="email"
               />

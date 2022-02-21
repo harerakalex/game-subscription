@@ -1,11 +1,12 @@
 import React from 'react';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, Feather } from '@expo/vector-icons';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 import HomeScreen from '../../screens/Home';
 import ProfileScreen from '../../screens/Profile';
-import ChatScreen from '../../screens/Chat';
 import { theme } from '../../theme';
+import ActivityScreen from '../../screens/Acticity';
+import WalletScreen from '../../screens/Wallet';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -28,11 +29,19 @@ const TabNavigation = () => (
       }}
     />
     <Tab.Screen
-      name="Chat"
-      component={ChatScreen}
+      name="Activity"
+      component={ActivityScreen}
       options={{
-        tabBarLabel: 'Chat',
-        tabBarIcon: ({ color }) => <Ionicons name="chatbox-sharp" color={color} size={26} />
+        tabBarLabel: 'Activity',
+        tabBarIcon: ({ color }) => <Feather name="activity" color={color} size={26} />
+      }}
+    />
+    <Tab.Screen
+      name="Wallet"
+      component={WalletScreen}
+      options={{
+        tabBarLabel: 'Wallet',
+        tabBarIcon: ({ color }) => <Ionicons name="wallet" color={color} size={26} />
       }}
     />
     <Tab.Screen

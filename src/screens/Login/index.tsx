@@ -31,7 +31,8 @@ const LoginScreen = () => {
         if (token) await storeToken(token);
       })();
 
-      return navigation.replace('Drawers', { screen: 'HomeScreen' });
+      // return navigation.replace('Drawers', { screen: 'HomeScreen' });
+      return navigation.replace('Tabs');
     }
 
     if (errorLogin) {
@@ -65,7 +66,7 @@ const LoginScreen = () => {
               <InputBox
                 value={email}
                 placeholder={'Email'}
-                onChangeText={email => setEmail(email)}
+                onChangeText={email => setEmail(email.trim())}
                 keyboardType="email-address"
                 autoComplete="email"
               />

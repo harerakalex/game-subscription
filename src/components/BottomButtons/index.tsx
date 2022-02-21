@@ -1,26 +1,74 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, Fragment, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+// import Share from 'react-native-share';
 
 import { theme } from '../../theme';
 import Button from '../reusable/Button';
 import { Container, Line } from './styles';
+import { Share } from 'react-native';
 
-const BottomButtons: FC = () => {
+interface Props {
+  buttons?: string[]; // invite, deposit, upgrade, withdraw
+}
+
+const BottomButtons: FC<Props> = props => {
+  const { buttons } = props;
+
+  const navigation = useNavigation<any>();
+
+  const onShare = async () => {
+    try {
+      await Share.share({
+        message: 'https://github.com/harerakalex/game-subscription'
+      });
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+
   return (
     <>
       <Line />
       <Container>
-        <Button
-          label="Invite"
-          pressHandler={() => console.log('Invite')}
-          width="50%"
-          bgColor={theme.colors.inactive}
-        />
-        <Button
-          label="Withdraw"
-          pressHandler={() => console.log('Withdraw')}
-          width="50%"
-          bgColor={theme.colors.darkWhite}
-        />
+        {buttons?.map(button => (
+          <Fragment key={button}>
+            {button == 'invite' && (
+              <Button
+                label="Invite"
+                pressHandler={onShare}
+                width="50%"
+                bgColor={theme.colors.inactive}
+              />
+            )}
+
+            {button == 'deposit' && (
+              <Button
+                label="Deposit"
+                pressHandler={() => console.log('Deposit')}
+                width="50%"
+                bgColor={'blue'}
+              />
+            )}
+
+            {button == 'upgrade' && (
+              <Button
+                label="upgrade"
+                pressHandler={() => console.log('Upgrade')}
+                width="50%"
+                bgColor={'blue'}
+              />
+            )}
+
+            {button == 'withdraw' && (
+              <Button
+                label="withdraw"
+                pressHandler={() => console.log('Withdraw')}
+                width="50%"
+                bgColor={theme.colors.gray}
+              />
+            )}
+          </Fragment>
+        ))}
       </Container>
     </>
   );
