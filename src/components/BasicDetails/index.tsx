@@ -4,8 +4,13 @@ import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { Container, ItemContainer, ItemDetail, ItemIcon, ItemTitle } from './styles';
 import { Text } from '../reusable/styled';
 import { theme } from '../../theme';
+import { IUser } from '../../redux/interfaces/user.interface';
 
-const BasicDetails: FC = () => {
+interface Props {
+  user: IUser;
+}
+
+const BasicDetails: FC<Props> = ({ user }) => {
   return (
     <Container>
       <ItemContainer>
@@ -16,7 +21,7 @@ const BasicDetails: FC = () => {
           <Text>Subscription</Text>
         </ItemTitle>
         <ItemDetail>
-          <Text textTransform="uppercase">USD 100</Text>
+          <Text textTransform="uppercase">USD {user?.subscription}</Text>
         </ItemDetail>
       </ItemContainer>
       <ItemContainer>
@@ -27,7 +32,7 @@ const BasicDetails: FC = () => {
           <Text>Balance</Text>
         </ItemTitle>
         <ItemDetail>
-          <Text textTransform="uppercase">USD 30</Text>
+          <Text textTransform="uppercase">USD {user?.balance}</Text>
         </ItemDetail>
       </ItemContainer>
     </Container>

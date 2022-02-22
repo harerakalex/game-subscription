@@ -1,6 +1,6 @@
 import { Method } from 'axios';
 import { API_REQUEST } from '../constants/apiActions';
-import { Axios } from '../utils';
+import { Axios, isObjectEmpty } from '../utils';
 
 interface HttpOptions {
   token: string;
@@ -14,7 +14,7 @@ type APIActionPayload = {
   onFailure: any;
   onEnd: any;
   method: Method;
-  data: object;
+  data: object | undefined;
   queries: [string];
   url: string;
   httpOptions: HttpOptions;
@@ -33,6 +33,10 @@ function apiMiddleware({ dispatch, getState }: any) {
       try {
         if (typeof payload.onStart === 'function') {
           await payload.onStart()(dispatch);
+        }
+        // A work a round for IOS expecting undefined value when no data provided
+        if (isObjectEmpty(payload.data as Object)) {
+          payload.data = undefined;
         }
         const { data } = await Axios.request({
           method: payload.method,

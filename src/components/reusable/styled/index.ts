@@ -10,11 +10,7 @@ interface ITextProps {
   marginTop?: number;
   marginBottom?: number;
   color?: string;
-}
-
-interface IImageProps {
-  width?: number;
-  height?: number;
+  weight?: string;
 }
 
 export const BackgroundImage = styled.ImageBackground`
@@ -28,6 +24,7 @@ export const Text = styled.Text<ITextProps>`
   text-align: ${props => props.alignment || 'left'};
   margin-top: ${props => props.marginTop || 3}px;
   margin-bottom: ${props => props.marginBottom || 3}px;
+  font-weight: ${props => props.weight || 100};
 `;
 
 export const Image = styled.Image`

@@ -1,3 +1,5 @@
+import { IUser } from '../interfaces/user.interface';
+
 export const LOGIN_LOADING = 'LOGIN_LOADING';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -18,8 +20,7 @@ export interface LoginFail {
 
 export interface LoginSuccess {
   type: typeof LOGIN_SUCCESS;
-  payload: any;
-  isLoggedIn: boolean;
+  payload: IUser;
 }
 
 export type LoginDispatchTypes = LoginLoading | LoginFail | LoginSuccess;

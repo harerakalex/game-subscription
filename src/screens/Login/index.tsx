@@ -9,19 +9,30 @@ import Button from '../../components/reusable/Button';
 import Link from '../../components/reusable/Link';
 import { RootState } from '../../redux';
 import { LoginAction } from '../../redux/actions/login';
-import { EToastType, storeToken, toast } from '../../utils';
+import { EToastType, getToken, storeToken, toast } from '../../utils';
+import Loader from '../../components/reusable/Loader';
 
 const { height } = Dimensions.get('window');
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading = false, setLoading] = useState<boolean>();
 
   const navigation = useNavigation<any>();
 
   const dispatch = useDispatch();
 
   const { user, loginLoading, errorLogin } = useSelector((state: RootState) => state.users);
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const token = await getToken();
+      setLoading(false);
+      if (token) return navigation.replace('Tabs');
+    })();
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -52,6 +63,10 @@ const LoginScreen = () => {
 
     LoginAction({ email, password })(dispatch);
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <View style={styles.container}>

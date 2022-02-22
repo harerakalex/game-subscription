@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '../../components/reusable/Button';
 import {
@@ -17,11 +17,14 @@ import { Text } from '../../components/reusable/styled';
 import { EToastType, removeToken, toast } from '../../utils';
 import { LOGOUT_SUCCESS } from '../../redux/action-types/logout';
 import Background from '../../components/reusable/Background';
+import { RootState } from '../../redux';
 
 const ProfileScreen: FC = () => {
   const navigation = useNavigation<any>();
 
   const dispatch = useDispatch();
+
+  const { user } = useSelector((state: RootState) => state.users);
 
   const handleLogout = async () => {
     await removeToken();
@@ -36,7 +39,7 @@ const ProfileScreen: FC = () => {
     return navigation.replace('Login');
   };
 
-  const renderRow = (label: string, value: string) => {
+  const renderRow = (label: string, value: string | undefined) => {
     return (
       <UserInfoContainer>
         <Text>{label}:</Text>
@@ -56,17 +59,18 @@ const ProfileScreen: FC = () => {
               <ProfilePicture source={require('../../assets/images/avatar.jpg')} />
             </ProfilePictureContainer>
             <NameContainer>
-              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Carlos Harerimana</Text>
+              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+                {user?.firstName} {user?.lastName}
+              </Text>
             </NameContainer>
           </PictureContainer>
 
           <Line />
 
-          {renderRow('Username', 'harerakalex')}
-          {renderRow('Email', 'harera@gmail.com')}
-          {renderRow('Invitation code', 'harerakalex')}
-          {renderRow('Referral link', 'coin.com/harerakalex')}
-          {renderRow('Phone number', '+250780289165')}
+          {renderRow('Username', user?.username)}
+          {renderRow('Email', user?.email)}
+          {renderRow('Invitation code', user?.username)}
+          {renderRow('Referral link', `games.com/${user?.username}`)}
         </Container>
         <LogoutButtonContainer>
           <Button label="Logout" pressHandler={handleLogout} width="50%" />
