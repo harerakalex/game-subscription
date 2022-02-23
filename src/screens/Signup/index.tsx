@@ -11,6 +11,8 @@ import { RootState } from '../../redux';
 import { EToastType, toast } from '../../utils';
 import { LOGOUT_SUCCESS } from '../../redux/action-types/logout';
 import { RegisterAction } from '../../redux/actions/register';
+import CustomAlert from '../../components/CustomAlert';
+import { KeyboardStyles } from './styles';
 
 const { height } = Dimensions.get('window');
 
@@ -19,6 +21,7 @@ const SignupScreen = () => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [referral, setReferral] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const navigation = useNavigation<any>();
@@ -43,7 +46,7 @@ const SignupScreen = () => {
     if (errorRegister) {
       toast(EToastType.ERROR, 'Bad request', errorRegister);
     }
-  }, [user, errorRegister]);
+  }, [user]);
 
   const handleSignup = async () => {
     const taostTitle = 'Bad Request';
@@ -76,17 +79,18 @@ const SignupScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.mainWrapper}>
-        <View>
-          <Text style={styles.title}>Welcome onboard!</Text>
-          <Text style={styles.titleDescription}>
-            Make profits from helping us advertize our games
-          </Text>
-        </View>
-        <View>
-          <View style={styles.contentWrapper}>
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView behavior={'height'} enabled style={KeyboardStyles}>
+      <View style={styles.container}>
+        <View style={styles.mainWrapper}>
+          <View>
+            <Text style={styles.title}>Welcome onboard!</Text>
+            <Text style={styles.titleDescription}>
+              Make profits from helping us advertize our games
+            </Text>
+          </View>
+          <View>
+            <View style={styles.contentWrapper}>
+              {errorRegister && <CustomAlert message={errorRegister} type="error" />}
               <InputBox
                 value={firstName}
                 placeholder={'First name'}
@@ -118,6 +122,12 @@ const SignupScreen = () => {
                 secureText={true}
                 onChangeText={confirmPassword => setConfirmPassword(confirmPassword)}
               />
+              <InputBox
+                value={referral}
+                placeholder={'Referal Code'}
+                secureText={true}
+                onChangeText={referral => setReferral(referral)}
+              />
 
               <Button
                 label="Register"
@@ -129,11 +139,11 @@ const SignupScreen = () => {
                 <Text style={styles.noAccountText}>Already have an account? </Text>
                 <Link label="Login" pressHandler={() => navigation.navigate('Login')} />
               </View>
-            </KeyboardAvoidingView>
+            </View>
           </View>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

@@ -16,10 +16,20 @@ import {
   PROFILE_LOADING,
   PROFILE_FAIL
 } from '../action-types/user';
+import {
+  AdvertDispatchTypes,
+  GET_ADVERT_FAIL,
+  GET_ADVERT_SUCCESS,
+  GET_ADVERT_LOADING,
+  CREATE_ADVERT_FAIL,
+  CREATE_ADVERT_LOADING,
+  CREATE_ADVERT_SUCCESS
+} from '../action-types/advert';
 import { GameDispatchTypes, GAME_FAIL, GAME_LOADING, GAME_SUCCESS } from '../action-types/game';
 import { LogoutDispatchTypes, LOGOUT_SUCCESS } from '../action-types/logout';
 import { IUser } from '../interfaces/user.interface';
 import { IGame } from '../interfaces/game.interface';
+import { IAdvert } from '../interfaces/advert.interface';
 
 interface InitialState {
   user?: IUser;
@@ -32,11 +42,19 @@ interface InitialState {
   games: IGame[];
   getGameLoading?: boolean;
   getGameError?: any;
+  adverts: IAdvert[];
+  getAdvertsLoading: boolean;
+  getAdvertError?: any;
+  createAdvertLoading: boolean;
+  createAdvertError?: any;
 }
 
 const initialState: InitialState = {
   games: [],
-  getProfileLoading: false
+  adverts: [],
+  getProfileLoading: false,
+  getAdvertsLoading: false,
+  createAdvertLoading: false
 };
 
 export const userReducer = (
@@ -47,6 +65,7 @@ export const userReducer = (
     | RegisterDispatchTypes
     | ProfileDispatchTypes
     | GameDispatchTypes
+    | AdvertDispatchTypes
 ) => {
   switch (action.type) {
     // Login
@@ -136,6 +155,46 @@ export const userReducer = (
         ...state,
         games: action.payload,
         getGameLoading: false
+      };
+
+    // Get Advert
+    case GET_ADVERT_LOADING:
+      return {
+        ...state,
+        getAdvertsLoading: true
+      };
+    case GET_ADVERT_FAIL:
+      return {
+        ...state,
+        getAdvertError: action.payload,
+        getAdvertsLoading: false
+      };
+
+    case GET_ADVERT_SUCCESS:
+      return {
+        ...state,
+        adverts: action.payload,
+        getAdvertsLoading: false
+      };
+
+    // CREATE ADVERT
+    case CREATE_ADVERT_LOADING:
+      return {
+        ...state,
+        createAdvertLoading: true
+      };
+    case CREATE_ADVERT_FAIL:
+      return {
+        ...state,
+        createAdvertError: action.payload,
+        createAdvertLoading: false
+      };
+
+    case CREATE_ADVERT_SUCCESS:
+      return {
+        ...state,
+        adverts: [...state.adverts, action.payload],
+        createAdvertLoading: false
       };
 
     default:

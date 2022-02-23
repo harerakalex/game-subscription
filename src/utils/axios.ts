@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { getToken } from './asyncStorage';
 
-const BACKEND_URL = 'http://192.168.1.75:3500/api/v1';
+const BACKEND_URL = 'http://192.168.1.76:3500/api/v1';
 const http = axios.create({
   baseURL: BACKEND_URL,
   headers: {
@@ -11,7 +12,10 @@ const http = axios.create({
 });
 
 http.interceptors.request.use(async (request: any) => {
-  request.headers['Authorization'] = 'JWT';
+  const token = await getToken();
+  if (token) {
+    request.headers['Authorization'] = `${token}`;
+  }
   return request;
 });
 

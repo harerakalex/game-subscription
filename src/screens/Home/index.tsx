@@ -38,6 +38,8 @@ const HomeScreen: FC = () => {
     return <Loader />;
   }
 
+  const depositOption = user?.subscription === 0 ? 'deposit' : 'upgrade';
+
   return (
     <Background>
       <>
@@ -56,7 +58,7 @@ const HomeScreen: FC = () => {
           </HowItWorkContainer>
         </Container>
         <BottomConatiner>
-          <BottomButtons buttons={['invite', 'deposit']} />
+          <BottomButtons buttons={['invite', depositOption]} />
         </BottomConatiner>
       </>
     </Background>

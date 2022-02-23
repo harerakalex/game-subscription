@@ -11,6 +11,7 @@ import { RootState } from '../../redux';
 import { LoginAction } from '../../redux/actions/login';
 import { EToastType, getToken, storeToken, toast } from '../../utils';
 import Loader from '../../components/reusable/Loader';
+import CustomAlert from '../../components/CustomAlert';
 
 const { height } = Dimensions.get('window');
 
@@ -45,11 +46,7 @@ const LoginScreen = () => {
       // return navigation.replace('Drawers', { screen: 'HomeScreen' });
       return navigation.replace('Tabs');
     }
-
-    if (errorLogin) {
-      toast(EToastType.ERROR, 'Bad request', errorLogin);
-    }
-  }, [user, errorLogin]);
+  }, [user]);
 
   const handleLogin = async () => {
     const taostTitle = 'Bad Request';
@@ -69,15 +66,16 @@ const LoginScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.mainWrapper}>
-        <View>
-          <Text style={styles.title}>Welcome Back!</Text>
-          <Text style={styles.titleDescription}>Login into your account</Text>
-        </View>
-        <View>
-          <View style={styles.contentWrapper}>
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView behavior={'height'} enabled style={styles.KeyboardStyles}>
+      <View style={styles.container}>
+        <View style={styles.mainWrapper}>
+          <View>
+            <Text style={styles.title}>Welcome Back!</Text>
+            <Text style={styles.titleDescription}>Login into your account</Text>
+          </View>
+          <View>
+            <View style={styles.contentWrapper}>
+              {errorLogin && <CustomAlert message={errorLogin} type="error" />}
               <InputBox
                 value={email}
                 placeholder={'Email'}
@@ -102,11 +100,11 @@ const LoginScreen = () => {
                 <Text style={styles.noAccountText}>Don't have an account? </Text>
                 <Link label="Sign Up" pressHandler={() => navigation.navigate('Signup')} />
               </View>
-            </KeyboardAvoidingView>
+            </View>
           </View>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -150,6 +148,9 @@ const styles = StyleSheet.create({
   },
   noAccountText: {
     // width: '70%',
+  },
+  KeyboardStyles: {
+    flex: 1
   }
 });
 

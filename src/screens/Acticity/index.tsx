@@ -8,18 +8,26 @@ import { Text } from '../../components/reusable/styled';
 import { RootState } from '../../redux';
 import Loader from '../../components/reusable/Loader';
 import { GetGamesAction } from '../../redux/actions/game';
+import { GetAdvertsAction } from '../../redux/actions/advert';
 
 const ActivityScreen: FC = () => {
   const dispatch = useDispatch();
 
-  const { getGameLoading, games } = useSelector((state: RootState) => state.users);
+  const { getGameLoading, games, adverts, getAdvertsLoading, createAdvertLoading } = useSelector(
+    (state: RootState) => state.users
+  );
 
   useEffect(() => {
     GetGamesAction()(dispatch);
+    GetAdvertsAction()(dispatch);
   }, []);
 
-  if (getGameLoading) {
+  if (getGameLoading || getAdvertsLoading || createAdvertLoading) {
     return <Loader />;
+  }
+
+  if (createAdvertLoading) {
+    console.log('Loadin', createAdvertLoading);
   }
 
   return (
@@ -28,7 +36,7 @@ const ActivityScreen: FC = () => {
         <Text size={22} alignment="center" marginBottom={10}>
           Advertize your games
         </Text>
-        <Games games={games} />
+        {games && adverts && <Games games={games} adverts={adverts} />}
       </Container>
     </Background>
   );
