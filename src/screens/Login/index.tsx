@@ -12,6 +12,7 @@ import { LoginAction } from '../../redux/actions/login';
 import { EToastType, getToken, storeToken, toast } from '../../utils';
 import Loader from '../../components/reusable/Loader';
 import CustomAlert from '../../components/CustomAlert';
+import { LOGOUT_SUCCESS } from '../../redux/action-types/logout';
 
 const { height } = Dimensions.get('window');
 
@@ -43,7 +44,6 @@ const LoginScreen = () => {
         if (token) await storeToken(token);
       })();
 
-      // return navigation.replace('Drawers', { screen: 'HomeScreen' });
       return navigation.replace('Tabs');
     }
   }, [user]);
@@ -65,6 +65,15 @@ const LoginScreen = () => {
     return <Loader />;
   }
 
+  const handleGoToSignup = () => {
+    dispatch({
+      type: LOGOUT_SUCCESS,
+      payload: { defaultValue: undefined }
+    });
+
+    navigation.navigate('Signup');
+  };
+
   return (
     <KeyboardAvoidingView behavior={'height'} enabled style={styles.KeyboardStyles}>
       <View style={styles.container}>
@@ -75,7 +84,10 @@ const LoginScreen = () => {
           </View>
           <View>
             <View style={styles.contentWrapper}>
-              {errorLogin && <CustomAlert message={errorLogin} type="error" />}
+              {errorLogin && email && password ? (
+                <CustomAlert message={errorLogin} type="error" />
+              ) : null}
+
               <InputBox
                 value={email}
                 placeholder={'Email'}
@@ -98,7 +110,7 @@ const LoginScreen = () => {
               <Button label="Login" pressHandler={handleLogin} isLoading={loginLoading} />
               <View style={styles.noAccountContainer}>
                 <Text style={styles.noAccountText}>Don't have an account? </Text>
-                <Link label="Sign Up" pressHandler={() => navigation.navigate('Signup')} />
+                <Link label="Sign Up" pressHandler={handleGoToSignup} />
               </View>
             </View>
           </View>

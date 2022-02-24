@@ -34,9 +34,9 @@ const PackageItem: FC<Props> = ({ game, adverts }) => {
   };
 
   const checkIfGameIsAdvertised = () => {
-    const advertsedGames = adverts.map(advert => advert.id);
+    const advertsedGames = adverts.map(advert => advert.gameId);
 
-    if (advertsedGames.includes(game.id)) return true;
+    if (advertsedGames.includes(game?.id as number)) return true;
 
     return false;
   };

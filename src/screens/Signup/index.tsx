@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Dimensions, Platform, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -90,7 +90,8 @@ const SignupScreen = () => {
           </View>
           <View>
             <View style={styles.contentWrapper}>
-              {errorRegister && <CustomAlert message={errorRegister} type="error" />}
+              {errorRegister ? <CustomAlert message={errorRegister} type="error" /> : null}
+
               <InputBox
                 value={firstName}
                 placeholder={'First name'}

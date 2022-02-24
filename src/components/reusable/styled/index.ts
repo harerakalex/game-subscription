@@ -24,7 +24,7 @@ export const Text = styled.Text<ITextProps>`
   text-align: ${props => props.alignment || 'left'};
   margin-top: ${props => props.marginTop || 3}px;
   margin-bottom: ${props => props.marginBottom || 3}px;
-  font-weight: ${props => props.weight || 100};
+  font-weight: ${props => props.weight || 300};
 `;
 
 export const Image = styled.Image`

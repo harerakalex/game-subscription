@@ -10,3 +10,5 @@ export const HowItWorkContainer = styled.View`
 `;
 
 export const BottomConatiner = styled.View``;
+
+export const DailyHistoryConatiner = styled.View``;

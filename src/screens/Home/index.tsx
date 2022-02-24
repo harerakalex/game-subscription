@@ -44,7 +44,7 @@ const HomeScreen: FC = () => {
     <Background>
       <>
         <Container>
-          <Text size={22} alignment="center" marginBottom={10}>
+          <Text weight="500" size={22} alignment="center" marginTop={15} marginBottom={10}>
             Advertize Game
           </Text>
           <Text size={18} alignment="center" marginBottom={30}>

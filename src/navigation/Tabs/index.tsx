@@ -5,7 +5,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import HomeScreen from '../../screens/Home';
 import ProfileScreen from '../../screens/Profile';
 import { theme } from '../../theme';
-import ActivityScreen from '../../screens/Acticity';
+import ActivityScreen from '../../screens/Activity';
 import WalletScreen from '../../screens/Wallet';
 
 const Tab = createMaterialBottomTabNavigator();

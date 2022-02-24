@@ -30,6 +30,7 @@ import { LogoutDispatchTypes, LOGOUT_SUCCESS } from '../action-types/logout';
 import { IUser } from '../interfaces/user.interface';
 import { IGame } from '../interfaces/game.interface';
 import { IAdvert } from '../interfaces/advert.interface';
+import { getGameIncome } from '../../utils';
 
 interface InitialState {
   user?: IUser;
@@ -94,7 +95,10 @@ export const userReducer = (
         ...state,
         user: undefined,
         loginLoading: false,
-        games: []
+        games: [],
+        adverts: [],
+        errorLogin: '',
+        errorRegister: ''
       };
 
     // Register
@@ -191,9 +195,16 @@ export const userReducer = (
       };
 
     case CREATE_ADVERT_SUCCESS:
+      const { balance, subscription } = state.user as IUser;
+      const income = getGameIncome(subscription as number);
+      const newBalance = (balance as number) + income;
+      const newUser = state.user;
+      if (newUser) newUser.balance = newBalance;
+
       return {
         ...state,
         adverts: [...state.adverts, action.payload],
+        user: newUser,
         createAdvertLoading: false
       };
 
