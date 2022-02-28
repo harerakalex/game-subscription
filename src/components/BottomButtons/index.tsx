@@ -44,7 +44,7 @@ const BottomButtons: FC<Props> = props => {
             {button == 'deposit' && (
               <Button
                 label="Deposit"
-                pressHandler={() => console.log('Deposit')}
+                pressHandler={() => navigation.navigate('Payment')}
                 width="50%"
                 bgColor={'blue'}
               />
@@ -53,7 +53,7 @@ const BottomButtons: FC<Props> = props => {
             {button == 'upgrade' && (
               <Button
                 label="upgrade"
-                pressHandler={() => console.log('Upgrade')}
+                pressHandler={() => navigation.navigate('Payment')}
                 width="50%"
                 bgColor={'blue'}
               />

@@ -10,6 +10,7 @@ import TabNavigation from '../Tabs';
 import LoginScreen from '../../screens/Login';
 import SignupScreen from '../../screens/Signup';
 import PackagesScreen from '../../screens/Packages';
+import PaymentScreen from '../../screens/Payment';
 
 const Stack = createStackNavigator();
 
@@ -51,6 +52,16 @@ const Router = () => {
         <Stack.Screen
           name="Packages"
           component={PackagesScreen}
+          options={{
+            headerShown: true,
+            headerStyleInterpolator: HeaderStyleInterpolators.forSlideLeft,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+          }}
+        />
+
+        <Stack.Screen
+          name="Payment"
+          component={PaymentScreen}
           options={{
             headerShown: true,
             headerStyleInterpolator: HeaderStyleInterpolators.forSlideLeft,
