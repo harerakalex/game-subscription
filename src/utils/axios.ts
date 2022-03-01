@@ -1,7 +1,8 @@
 import axios from 'axios';
+
+import { BACKEND_URL } from '../constants/environment';
 import { getToken } from './asyncStorage';
 
-const BACKEND_URL = 'http://192.168.1.76:3500/api/v1';
 const http = axios.create({
   baseURL: BACKEND_URL,
   headers: {

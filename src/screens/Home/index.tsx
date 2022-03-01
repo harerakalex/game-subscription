@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { BottomConatiner, Container, HowItWorkContainer } from './styles';
 import VideoPlayer from '../../components/VideoPlayer';

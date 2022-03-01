@@ -13,9 +13,10 @@ import { Container, KeyboardStyles } from './styles';
 import { IInvoiceReturn } from '../../redux/interfaces/paynow.interface';
 import Loader from '../../components/reusable/Loader';
 import { theme } from '../../theme';
+import { NOW_PAYMENT_API_KEY } from '../../constants/environment';
 
 const PaymentScreen: FC = () => {
-  const [price_amount, setPriceAmount] = useState<number>();
+  const [price_amount, setPriceAmount] = useState<string>();
   const [error, setError] = useState<any>();
   const [loading, setLoading] = useState(false);
   const [invoice, setInvoice] = useState<IInvoiceReturn>();
@@ -27,7 +28,7 @@ const PaymentScreen: FC = () => {
       return;
     }
 
-    if (price_amount && price_amount < 50) {
+    if (price_amount && parseFloat(price_amount) < 50) {
       setError({ message: 'Price should be atleast 50 usd' });
       return;
     }
@@ -42,7 +43,7 @@ const PaymentScreen: FC = () => {
         },
         {
           headers: {
-            'x-api-key': 'RVQG3YN-QNPMKYS-H7QFNS2-QPDT50D',
+            'x-api-key': NOW_PAYMENT_API_KEY,
             'Content-Type': 'application/json'
           }
         }
@@ -67,7 +68,7 @@ const PaymentScreen: FC = () => {
   };
 
   if (loading) {
-    <Loader />;
+    return <Loader />;
   }
 
   return (
@@ -112,8 +113,8 @@ const PaymentScreen: FC = () => {
 
             <InputBox
               keyboardType="numeric"
-              value={price_amount ? price_amount.toString() : ''}
-              onChangeText={price_amount => setPriceAmount(parseInt(price_amount))}
+              value={price_amount}
+              onChangeText={price_amount => setPriceAmount(price_amount)}
               placeholder="Amount in USD"
             />
             <Button

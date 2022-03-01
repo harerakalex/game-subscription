@@ -25,12 +25,20 @@ import {
   CREATE_ADVERT_LOADING,
   CREATE_ADVERT_SUCCESS
 } from '../action-types/advert';
+
+import {
+  WithdrawDispatchTypes,
+  WITHDRAW_FAIL,
+  WITHDRAW_LOADING,
+  WITHDRAW_SUCCESS
+} from '../action-types/withdraw';
 import { GameDispatchTypes, GAME_FAIL, GAME_LOADING, GAME_SUCCESS } from '../action-types/game';
 import { LogoutDispatchTypes, LOGOUT_SUCCESS } from '../action-types/logout';
 import { IUser } from '../interfaces/user.interface';
 import { IGame } from '../interfaces/game.interface';
 import { IAdvert } from '../interfaces/advert.interface';
 import { getGameIncome } from '../../utils';
+import { IWithdraw } from '../interfaces/withdraw.interface';
 
 interface InitialState {
   user?: IUser;
@@ -48,6 +56,9 @@ interface InitialState {
   getAdvertError?: any;
   createAdvertLoading: boolean;
   createAdvertError?: any;
+  withdraw?: IWithdraw;
+  withdrawError?: any;
+  withdrawLoading: boolean;
 }
 
 const initialState: InitialState = {
@@ -55,7 +66,8 @@ const initialState: InitialState = {
   adverts: [],
   getProfileLoading: false,
   getAdvertsLoading: false,
-  createAdvertLoading: false
+  createAdvertLoading: false,
+  withdrawLoading: false
 };
 
 export const userReducer = (
@@ -67,6 +79,7 @@ export const userReducer = (
     | ProfileDispatchTypes
     | GameDispatchTypes
     | AdvertDispatchTypes
+    | WithdrawDispatchTypes
 ) => {
   switch (action.type) {
     // Login
@@ -206,6 +219,32 @@ export const userReducer = (
         adverts: [...state.adverts, action.payload],
         user: newUser,
         createAdvertLoading: false
+      };
+
+    // Withdraw
+    case WITHDRAW_LOADING:
+      return {
+        ...state,
+        withdrawLoading: true
+      };
+    case WITHDRAW_FAIL:
+      return {
+        ...state,
+        withdrawError: action.payload,
+        withdrawLoading: false
+      };
+
+    case WITHDRAW_SUCCESS:
+      if (state.user) {
+        const reducedBalance = (state.user?.balance as number) - action.payload.amount;
+        const userAfterWithdraw = state.user;
+        userAfterWithdraw.balance = reducedBalance;
+      }
+      return {
+        ...state,
+        withdraw: action.payload,
+        user: newUser,
+        withdrawLoading: false
       };
 
     default:

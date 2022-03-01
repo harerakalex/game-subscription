@@ -62,7 +62,7 @@ const BottomButtons: FC<Props> = props => {
             {button == 'withdraw' && (
               <Button
                 label="withdraw"
-                pressHandler={() => console.log('Withdraw')}
+                pressHandler={() => navigation.navigate('Withdraw')}
                 width="50%"
                 bgColor={theme.colors.gray}
               />

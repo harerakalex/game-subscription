@@ -11,6 +11,7 @@ import LoginScreen from '../../screens/Login';
 import SignupScreen from '../../screens/Signup';
 import PackagesScreen from '../../screens/Packages';
 import PaymentScreen from '../../screens/Payment';
+import WithdrawScreen from '../../screens/Withdraw';
 
 const Stack = createStackNavigator();
 
@@ -62,6 +63,16 @@ const Router = () => {
         <Stack.Screen
           name="Payment"
           component={PaymentScreen}
+          options={{
+            headerShown: true,
+            headerStyleInterpolator: HeaderStyleInterpolators.forSlideLeft,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+          }}
+        />
+
+        <Stack.Screen
+          name="Withdraw"
+          component={WithdrawScreen}
           options={{
             headerShown: true,
             headerStyleInterpolator: HeaderStyleInterpolators.forSlideLeft,
