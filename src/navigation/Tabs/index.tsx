@@ -2,11 +2,11 @@ import React from 'react';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
-import HomeScreen from '../../screens/Home';
 import ProfileScreen from '../../screens/Profile';
 import { theme } from '../../theme';
 import ActivityScreen from '../../screens/Activity';
-import WalletScreen from '../../screens/Wallet';
+import HomeStackNavigationNavigator from './HomeStackNavigator';
+import WalletStackNavigationNavigator from './WalletStackScreen';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -22,7 +22,7 @@ const TabNavigation = () => (
   >
     <Tab.Screen
       name="Home"
-      component={HomeScreen}
+      component={HomeStackNavigationNavigator}
       options={{
         tabBarLabel: 'Home',
         tabBarIcon: ({ color }) => <Ionicons name="home" color={color} size={26} />
@@ -38,7 +38,7 @@ const TabNavigation = () => (
     />
     <Tab.Screen
       name="Wallet"
-      component={WalletScreen}
+      component={WalletStackNavigationNavigator}
       options={{
         tabBarLabel: 'Wallet',
         tabBarIcon: ({ color }) => <Ionicons name="wallet" color={color} size={26} />

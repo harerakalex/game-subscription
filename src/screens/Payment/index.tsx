@@ -3,6 +3,7 @@ import axios from 'axios';
 import { KeyboardAvoidingView } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Clipboard from 'expo-clipboard';
+import { useDispatch, useSelector } from 'react-redux';
 
 import CustomAlert from '../../components/CustomAlert';
 import Background from '../../components/reusable/Background';
@@ -14,6 +15,9 @@ import { IInvoiceReturn } from '../../redux/interfaces/paynow.interface';
 import Loader from '../../components/reusable/Loader';
 import { theme } from '../../theme';
 import { NOW_PAYMENT_API_KEY } from '../../constants/environment';
+import { IPayment, IPaymentPayload } from '../../redux/interfaces/payment.interface';
+import { postRequest } from '../../utils';
+import { RootState } from '../../redux';
 
 const PaymentScreen: FC = () => {
   const [price_amount, setPriceAmount] = useState<string>();
@@ -21,6 +25,12 @@ const PaymentScreen: FC = () => {
   const [loading, setLoading] = useState(false);
   const [invoice, setInvoice] = useState<IInvoiceReturn>();
   const [copiedText, setCopiedText] = React.useState('');
+
+  const { user } = useSelector((state: RootState) => state.users);
+
+  const savePayment = async (payment: IPaymentPayload) => {
+    return await postRequest('/payment', payment);
+  };
 
   const handlePayment = async () => {
     if (!price_amount) {
@@ -49,6 +59,14 @@ const PaymentScreen: FC = () => {
         }
       );
       const result: IInvoiceReturn = Array.isArray(data) ? data[0].data : data.data;
+      const payload: IPaymentPayload = {
+        userId: user?.id as number,
+        amount: parseFloat(price_amount),
+        paymentId: result.id
+      };
+
+      await savePayment(payload);
+
       setLoading(false);
       setInvoice(result);
     } catch (err) {

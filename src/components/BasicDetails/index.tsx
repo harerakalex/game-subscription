@@ -11,6 +11,14 @@ interface Props {
 }
 
 const BasicDetails: FC<Props> = ({ user }) => {
+  const { subscription, balance } = user;
+
+  const formatAmount = (value: number) => {
+    if (Math.floor(value) === value) return value;
+    const numOfDecimal = value.toString().split('.')[1].length || 0;
+    if (numOfDecimal > 5) return value.toFixed(5);
+    return value;
+  };
   return (
     <Container>
       <ItemContainer>
@@ -21,7 +29,7 @@ const BasicDetails: FC<Props> = ({ user }) => {
           <Text>Subscription</Text>
         </ItemTitle>
         <ItemDetail>
-          <Text textTransform="uppercase">USD {user?.subscription}</Text>
+          <Text textTransform="uppercase">USD {formatAmount(subscription as number)}</Text>
         </ItemDetail>
       </ItemContainer>
       <ItemContainer>
@@ -32,7 +40,7 @@ const BasicDetails: FC<Props> = ({ user }) => {
           <Text>Balance</Text>
         </ItemTitle>
         <ItemDetail>
-          <Text textTransform="uppercase">USD {user?.balance}</Text>
+          <Text textTransform="uppercase">USD {formatAmount(balance as number)}</Text>
         </ItemDetail>
       </ItemContainer>
     </Container>

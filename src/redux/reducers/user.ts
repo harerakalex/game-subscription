@@ -111,7 +111,8 @@ export const userReducer = (
         games: [],
         adverts: [],
         errorLogin: '',
-        errorRegister: ''
+        errorRegister: '',
+        withdraw: undefined
       };
 
     // Register

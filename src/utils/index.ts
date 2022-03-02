@@ -6,3 +6,4 @@ export * from './toasts';
 export * from './asyncStorage';
 export * from './decodeToken';
 export * from './functions';
+export * from './apiShortCut';

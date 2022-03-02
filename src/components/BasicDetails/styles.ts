@@ -15,7 +15,7 @@ export const ItemIcon = styled.View`
 `;
 
 export const ItemTitle = styled.View`
-  width: 65%;
+  width: 55%;
 `;
 
 export const ItemDetail = styled.View``;
