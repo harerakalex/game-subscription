@@ -7,6 +7,7 @@ import { theme } from '../../theme';
 import ActivityScreen from '../../screens/Activity';
 import HomeStackNavigationNavigator from './HomeStackNavigator';
 import WalletStackNavigationNavigator from './WalletStackScreen';
+import ActivityStackNavigationNavigator from './ActivityStackNavigator';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -30,7 +31,7 @@ const TabNavigation = () => (
     />
     <Tab.Screen
       name="Activity"
-      component={ActivityScreen}
+      component={ActivityStackNavigationNavigator}
       options={{
         tabBarLabel: 'Activity',
         tabBarIcon: ({ color }) => <Feather name="activity" color={color} size={26} />

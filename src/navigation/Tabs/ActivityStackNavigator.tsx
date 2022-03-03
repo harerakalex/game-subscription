@@ -6,17 +6,17 @@ import {
 } from '@react-navigation/stack';
 
 import PaymentScreen from '../../screens/Payment';
-import HomeScreen from '../../screens/Home';
+import ActivityScreen from '../../screens/Activity';
 
 const HomeStackNavigation = createStackNavigator();
 
-const HomeStackNavigationNavigator = () => {
+const ActivityStackNavigationNavigator = () => {
   return (
     <>
       <HomeStackNavigation.Navigator>
         <HomeStackNavigation.Screen
-          name="My Home"
-          component={HomeScreen}
+          name="My Activity"
+          component={ActivityScreen}
           options={{
             headerShown: false,
             headerStyleInterpolator: HeaderStyleInterpolators.forSlideLeft,
@@ -37,4 +37,4 @@ const HomeStackNavigationNavigator = () => {
   );
 };
 
-export default HomeStackNavigationNavigator;
+export default ActivityStackNavigationNavigator;

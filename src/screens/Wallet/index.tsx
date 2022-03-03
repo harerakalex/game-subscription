@@ -39,7 +39,7 @@ const WalletScreen: FC = () => {
     <Background>
       <>
         <Container>
-          <BasicDetails user={user as IUser} />
+          {user ? <BasicDetails user={user as IUser} /> : null}
           {adverts.length !== 0 ? (
             <DailyHistoryConatiner>
               <Text size={21} alignment="center" marginBottom={10}>

@@ -16,7 +16,7 @@ const WalletStackNavigationNavigator = () => {
     <>
       <WalletStackNavigation.Navigator>
         <WalletStackNavigation.Screen
-          name="Wallet Screen"
+          name="My Wallet"
           component={WalletScreen}
           options={{
             headerShown: false,
