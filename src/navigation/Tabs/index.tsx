@@ -2,12 +2,11 @@ import React from 'react';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
-import ProfileScreen from '../../screens/Profile';
 import { theme } from '../../theme';
-import ActivityScreen from '../../screens/Activity';
 import HomeStackNavigationNavigator from './HomeStackNavigator';
 import WalletStackNavigationNavigator from './WalletStackScreen';
 import ActivityStackNavigationNavigator from './ActivityStackNavigator';
+import ProfileStackNavigationNavigator from './ProfileStackNavigator';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -47,7 +46,7 @@ const TabNavigation = () => (
     />
     <Tab.Screen
       name="Profile"
-      component={ProfileScreen}
+      component={ProfileStackNavigationNavigator}
       options={{
         tabBarLabel: 'Profile',
         tabBarIcon: ({ color }) => <Ionicons name="person" color={color} size={26} />

@@ -18,6 +18,7 @@ import { EToastType, removeToken, toast } from '../../utils';
 import { LOGOUT_SUCCESS } from '../../redux/action-types/logout';
 import Background from '../../components/reusable/Background';
 import { RootState } from '../../redux';
+import Link from '../../components/reusable/Link';
 
 const ProfileScreen: FC = () => {
   const navigation = useNavigation<any>();
@@ -70,7 +71,13 @@ const ProfileScreen: FC = () => {
           {renderRow('Username', user?.username)}
           {renderRow('Email', user?.email)}
           {renderRow('Invitation code', user?.username)}
-          {renderRow('Referral link', `games.com/${user?.username}`)}
+
+          <Link
+            marginTop="20px"
+            size={18}
+            label="Reset Password"
+            pressHandler={() => navigation.navigate('ResetPassword')}
+          />
         </Container>
         <LogoutButtonContainer>
           <Button label="Logout" pressHandler={handleLogout} width="50%" />

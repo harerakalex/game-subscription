@@ -23,6 +23,7 @@ const SignupScreen = () => {
   const [password, setPassword] = useState('');
   const [referral, setReferral] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState<any>('');
 
   const navigation = useNavigation<any>();
 
@@ -48,31 +49,35 @@ const SignupScreen = () => {
     }
   }, [user]);
 
-  const handleSignup = async () => {
-    const taostTitle = 'Bad Request';
+  useEffect(() => {
+    if (errorRegister) {
+      setErrorMsg(errorRegister);
+    }
+  }, [errorRegister]);
 
+  const handleSignup = async () => {
     if (!firstName) {
-      return toast(EToastType.ERROR, taostTitle, 'First name is Required');
+      return setErrorMsg('First name is Required');
     }
 
     if (!lastName) {
-      return toast(EToastType.ERROR, taostTitle, 'Last name is required');
+      return setErrorMsg('Last name is required');
     }
 
     if (!email) {
-      return toast(EToastType.ERROR, taostTitle, 'Email is Required');
+      return setErrorMsg('Email is Required');
     }
 
     if (!password) {
-      return toast(EToastType.ERROR, taostTitle, 'Password is required');
+      return setErrorMsg('Password is required');
     }
 
     if (!confirmPassword) {
-      return toast(EToastType.ERROR, taostTitle, 'Confirming password is Required');
+      return setErrorMsg('Confirming password is Required');
     }
 
     if (password !== confirmPassword) {
-      return toast(EToastType.ERROR, taostTitle, 'Password do not match!');
+      return setErrorMsg('Password do not match!');
     }
 
     RegisterAction({ firstName, lastName, email, password })(dispatch);
@@ -90,7 +95,7 @@ const SignupScreen = () => {
           </View>
           <View>
             <View style={styles.contentWrapper}>
-              {errorRegister ? <CustomAlert message={errorRegister} type="error" /> : null}
+              {errorMsg ? <CustomAlert message={errorMsg} type="error" /> : null}
 
               <InputBox
                 value={firstName}

@@ -20,6 +20,7 @@ const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading = false, setLoading] = useState<boolean>();
+  const [errorMsg, setErrorMsg] = useState<any>('');
 
   const navigation = useNavigation<any>();
 
@@ -48,14 +49,19 @@ const LoginScreen = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (errorLogin) {
+      setErrorMsg(errorLogin);
+    }
+  }, [errorLogin]);
+
   const handleLogin = async () => {
-    const taostTitle = 'Bad Request';
     if (!email) {
-      return toast(EToastType.ERROR, taostTitle, 'Email is Required');
+      return setErrorMsg('Email is Required');
     }
 
     if (!password) {
-      return toast(EToastType.ERROR, taostTitle, 'Password is required');
+      return setErrorMsg('Password is required');
     }
 
     LoginAction({ email, password })(dispatch);
@@ -84,9 +90,7 @@ const LoginScreen = () => {
           </View>
           <View>
             <View style={styles.contentWrapper}>
-              {errorLogin && email && password ? (
-                <CustomAlert message={errorLogin} type="error" />
-              ) : null}
+              {errorMsg ? <CustomAlert message={errorMsg} type="error" /> : null}
 
               <InputBox
                 value={email}
@@ -104,7 +108,7 @@ const LoginScreen = () => {
               <View style={styles.forgetPWDContainer}>
                 <Link
                   label="Forget password?"
-                  pressHandler={() => console.log('Forget Passowrd')}
+                  pressHandler={() => navigation.navigate('ForgetPassword')}
                 />
               </View>
               <Button label="Login" pressHandler={handleLogin} isLoading={loginLoading} />

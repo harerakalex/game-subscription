@@ -1,11 +1,10 @@
 import React, { FC, Fragment, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-// import Share from 'react-native-share';
+import { Share } from 'react-native';
 
 import { theme } from '../../theme';
 import Button from '../reusable/Button';
 import { Container, Line } from './styles';
-import { Share } from 'react-native';
 
 interface Props {
   buttons?: string[]; // invite, deposit, upgrade, withdraw

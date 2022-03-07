@@ -12,6 +12,7 @@ import SignupScreen from '../../screens/Signup';
 import PackagesScreen from '../../screens/Packages';
 import PaymentScreen from '../../screens/Payment';
 import WithdrawScreen from '../../screens/Withdraw';
+import ForgetPasswordScreen from '../../screens/ForgetPassword';
 
 const Stack = createStackNavigator();
 
@@ -32,6 +33,16 @@ const Router = () => {
         <Stack.Screen
           name="Signup"
           component={SignupScreen}
+          options={({ route }: any) => ({
+            headerShown: false,
+            headerStyleInterpolator: HeaderStyleInterpolators.forSlideLeft,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+          })}
+        />
+
+        <Stack.Screen
+          name="ForgetPassword"
+          component={ForgetPasswordScreen}
           options={({ route }: any) => ({
             headerShown: false,
             headerStyleInterpolator: HeaderStyleInterpolators.forSlideLeft,
