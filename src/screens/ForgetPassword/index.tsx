@@ -9,6 +9,7 @@ import { Text } from '../../components/reusable/styled';
 import { theme } from '../../theme';
 import { Container, KeyboardStyles } from './styles';
 import CustomAlert from '../../components/CustomAlert';
+import { postRequest, EToastType, toast } from '../../utils';
 
 const ForgetPasswordScreen: FC = () => {
   const [email, setEmail] = useState('');
@@ -17,9 +18,29 @@ const ForgetPasswordScreen: FC = () => {
 
   const navigation = useNavigation<any>();
 
-  const handleSendTempPwd = () => {
+  const handleSendTempPwd = async () => {
     if (!email) {
       return setErrorMsg('Email is Required');
+    }
+
+    try {
+      setLoading(true);
+      await postRequest('/users/password', { email });
+      setLoading(false);
+
+      toast(
+        EToastType.SUCCESS,
+        'Temporary Password',
+        `Email with temporary message has been sent to your inbox.`
+      );
+
+      navigation.navigate('Login');
+    } catch (err) {
+      const error = Array.isArray(err) ? err[0] : err;
+      const { response } = error;
+
+      setErrorMsg(response ? response.data.message || response.data.error : 'Please try again');
+      setLoading(false);
     }
   };
 

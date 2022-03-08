@@ -4,11 +4,11 @@ import { useNavigation } from '@react-navigation/native';
 
 import Button from '../../components/reusable/Button';
 import InputBox from '../../components/reusable/InputBox';
-import Link from '../../components/reusable/Link';
 import { Text } from '../../components/reusable/styled';
 import { theme } from '../../theme';
 import { Container, KeyboardStyles } from './styles';
 import CustomAlert from '../../components/CustomAlert';
+import { EToastType, putRequest, toast } from '../../utils';
 
 const ResetPasswordScreen: FC = () => {
   const [password, setPassword] = useState('');
@@ -18,7 +18,7 @@ const ResetPasswordScreen: FC = () => {
 
   const navigation = useNavigation<any>();
 
-  const handleResetPwd = () => {
+  const handleResetPwd = async () => {
     if (!password) {
       return setErrorMsg('Passowrd is Required');
     }
@@ -27,6 +27,22 @@ const ResetPasswordScreen: FC = () => {
     }
     if (password !== confirmPassword) {
       return setErrorMsg('Password do not match!');
+    }
+
+    try {
+      setLoading(true);
+      await putRequest('/users/reset-password', { password });
+      setLoading(false);
+
+      toast(EToastType.SUCCESS, 'Password Reset', `Password reset successfully`);
+
+      navigation.goBack();
+    } catch (err) {
+      const error = Array.isArray(err) ? err[0] : err;
+      const { response } = error;
+
+      setErrorMsg(response ? response.data.message || response.data.error : 'Please try again');
+      setLoading(false);
     }
   };
 
