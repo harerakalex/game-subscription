@@ -2,7 +2,7 @@
   "expo": {
     "name": "diver-ads",
     "slug": "game-advertising",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "splash": {
@@ -13,11 +13,19 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.bytefusion.gameadvertising"
     },
     "android": {
+      "package": "com.bytefusion.gameadvertising",
+      "permissions": [
+        "NOTIFICATIONS"
+      ],
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

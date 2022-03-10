@@ -1,4 +1,4 @@
 // TODO; FIND A WAY TO HIDE THESE KEYS
 export const NOW_PAYMENT_API_KEY = 'RVQG3YN-QNPMKYS-H7QFNS2-QPDT50D';
 export const JWT_SECRETE_KEY = 'kigali';
-export const BACKEND_URL = 'http://192.168.1.76:3500/api/v1';
+export const BACKEND_URL = 'http://164.92.69.240:3500/api/v1';

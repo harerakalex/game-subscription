@@ -1,6 +1,6 @@
 {
   "name": "coin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -23,6 +23,7 @@
     "expo-linear-gradient": "^11.0.3",
     "expo-linking": "^3.0.0",
     "expo-status-bar": "~1.2.0",
+    "expo-updates": "~0.11.6",
     "expo-web-browser": "^10.1.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
