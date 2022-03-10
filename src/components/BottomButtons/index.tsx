@@ -37,6 +37,7 @@ const BottomButtons: FC<Props> = props => {
                 pressHandler={onShare}
                 width="50%"
                 bgColor={theme.colors.inactive}
+                disabled={true}
               />
             )}
 

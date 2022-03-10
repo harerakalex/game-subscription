@@ -1,6 +1,9 @@
 import React, { FC, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
+import { FontAwesome } from '@expo/vector-icons';
+import * as Clipboard from 'expo-clipboard';
+import { Alert, TouchableOpacity } from 'react-native';
 
 import Button from '../../components/reusable/Button';
 import {
@@ -11,7 +14,8 @@ import {
   ProfilePicture,
   Line,
   UserInfoContainer,
-  LogoutButtonContainer
+  LogoutButtonContainer,
+  CopyableRow
 } from './styles';
 import { Text } from '../../components/reusable/styled';
 import { EToastType, removeToken, toast } from '../../utils';
@@ -19,6 +23,7 @@ import { LOGOUT_SUCCESS } from '../../redux/action-types/logout';
 import Background from '../../components/reusable/Background';
 import { RootState } from '../../redux';
 import Link from '../../components/reusable/Link';
+import { theme } from '../../theme';
 
 const ProfileScreen: FC = () => {
   const navigation = useNavigation<any>();
@@ -40,13 +45,35 @@ const ProfileScreen: FC = () => {
     return navigation.replace('Login');
   };
 
+  const copyToClipboard = () => {
+    if (user?.username) Clipboard.setString(user?.username);
+
+    Alert.alert('Copied to clipboard', '', [{ text: 'OK' }]);
+  };
+
   const renderRow = (label: string, value: string | undefined) => {
     return (
       <UserInfoContainer>
         <Text>{label}:</Text>
-        <Text style={{ fontWeight: 'bold' }} textTransform="lowercase">
+        <Text weight="bold" textTransform="lowercase">
           {value}
         </Text>
+      </UserInfoContainer>
+    );
+  };
+
+  const renderCopyableRow = (label: string, value: string | undefined) => {
+    return (
+      <UserInfoContainer>
+        <Text>{label}:</Text>
+        <CopyableRow>
+          <Text style={{ width: '90%' }} textTransform="lowercase">
+            {value}
+          </Text>
+          <TouchableOpacity onPress={copyToClipboard}>
+            <FontAwesome name="copy" size={24} color={theme.colors.white} />
+          </TouchableOpacity>
+        </CopyableRow>
       </UserInfoContainer>
     );
   };
@@ -70,7 +97,7 @@ const ProfileScreen: FC = () => {
 
           {renderRow('Username', user?.username)}
           {renderRow('Email', user?.email)}
-          {renderRow('Invitation code', user?.username)}
+          {renderCopyableRow('Invitation code', user?.username)}
 
           <Link
             marginTop="20px"

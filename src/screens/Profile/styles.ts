@@ -57,3 +57,8 @@ export const LogoutButtonContainer = styled.View`
   padding-top: 5px;
   background: ${theme.colors.lightGray};
 `;
+
+export const CopyableRow = styled.View`
+  display: flex;
+  flex-direction: row;
+`;
