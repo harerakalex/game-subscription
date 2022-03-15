@@ -35,6 +35,11 @@ const WithdrawScreen: FC = () => {
       return;
     }
 
+    if (parseFloat(amount) < 20) {
+      setError({ message: 'Minimum amount should be 20 USD' });
+      return;
+    }
+
     if (!walletAddress) {
       setError({ message: 'Please provide your wallet address' });
       return;

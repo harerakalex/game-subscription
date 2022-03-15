@@ -18,7 +18,7 @@ const BottomButtons: FC<Props> = props => {
   const onShare = async () => {
     try {
       await Share.share({
-        message: 'https://github.com/harerakalex/game-subscription'
+        message: 'https://bit.ly/3KYNa03'
       });
     } catch (error: any) {
       alert(error.message);
@@ -37,7 +37,6 @@ const BottomButtons: FC<Props> = props => {
                 pressHandler={onShare}
                 width="50%"
                 bgColor={theme.colors.inactive}
-                disabled={true}
               />
             )}
 
