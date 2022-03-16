@@ -13,6 +13,7 @@ import { LOGOUT_SUCCESS } from '../../redux/action-types/logout';
 import { RegisterAction } from '../../redux/actions/register';
 import CustomAlert from '../../components/CustomAlert';
 import { KeyboardStyles } from './styles';
+import { IUser } from '../../redux/interfaces/user.interface';
 
 const { height } = Dimensions.get('window');
 
@@ -80,7 +81,19 @@ const SignupScreen = () => {
       return setErrorMsg('Password do not match!');
     }
 
-    RegisterAction({ firstName, lastName, email, password })(dispatch);
+    const payload: IUser = {
+      firstName,
+      lastName,
+      email,
+      password,
+      referral
+    };
+
+    if (!payload.referral) {
+      delete payload.referral;
+    }
+
+    RegisterAction(payload)(dispatch);
   };
 
   return (
@@ -120,19 +133,18 @@ const SignupScreen = () => {
                 value={password}
                 placeholder={'Password'}
                 secureText={true}
-                onChangeText={password => setPassword(password)}
+                onChangeText={password => setPassword(password.trim())}
               />
               <InputBox
                 value={confirmPassword}
                 placeholder={'Confirm Password'}
                 secureText={true}
-                onChangeText={confirmPassword => setConfirmPassword(confirmPassword)}
+                onChangeText={confirmPassword => setConfirmPassword(confirmPassword.trim())}
               />
               <InputBox
                 value={referral}
                 placeholder={'Referal Code'}
-                secureText={true}
-                onChangeText={referral => setReferral(referral)}
+                onChangeText={referral => setReferral(referral.trim())}
               />
 
               <Button

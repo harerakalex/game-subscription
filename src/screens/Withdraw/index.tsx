@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
-import { KeyboardAvoidingView } from 'react-native';
+import { Alert, KeyboardAvoidingView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 import CustomAlert from '../../components/CustomAlert';
 import Background from '../../components/reusable/Background';
@@ -9,27 +10,22 @@ import InputBox from '../../components/reusable/InputBox';
 import { Text } from '../../components/reusable/styled';
 import { Container, KeyboardStyles } from './styles';
 import Loader from '../../components/reusable/Loader';
-import { theme } from '../../theme';
 import { RootState } from '../../redux';
-import { WithdrawAction } from '../../redux/actions/withdraw';
+import { postRequest } from '../../utils';
+import { WITHDRAW_FAIL, WITHDRAW_SUCCESS } from '../../redux/action-types/withdraw';
 
 const WithdrawScreen: FC = () => {
   const [amount, setAmount] = useState<string>('');
   const [walletAddress, setWalletAddress] = useState<string>('');
   const [error, setError] = useState<any>();
-  const [isWithdrown, setIsWithdrown] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
+  const navigation = useNavigation<any>();
 
-  const { user, withdrawLoading, withdrawError, withdraw } = useSelector(
-    (state: RootState) => state.users
-  );
+  const { user, withdrawError } = useSelector((state: RootState) => state.users);
 
-  //   useEffect(() => {
-  //     if (isWithdrown && withdraw) console.log('====', withdraw);
-  //   }, [withdraw?.id, isWithdrown]);
-
-  const handleWithdraw = () => {
+  const handleWithdraw = async () => {
     if (!amount) {
       setError({ message: 'Please provide amount to withdraw' });
       return;
@@ -53,10 +49,35 @@ const WithdrawScreen: FC = () => {
       }
     }
 
-    WithdrawAction(parseFloat(amount), walletAddress)(dispatch);
+    try {
+      setLoading(true);
+      const payload = {
+        amount: parseFloat(amount),
+        walletAddress: walletAddress
+      };
+      const data = await postRequest('/withdraw', payload);
+
+      dispatch({
+        type: WITHDRAW_SUCCESS,
+        payload: Array.isArray(data) ? data[0].data : data.data
+      });
+
+      setLoading(false);
+      Alert.alert('Request sent', '', [{ text: 'OK', onPress: () => navigation.goBack() }]);
+    } catch (err) {
+      const error = Array.isArray(err) ? err[0] : err;
+      const { response } = error;
+
+      dispatch({
+        type: WITHDRAW_FAIL,
+        payload: response ? response.data.message || response.data.error : 'Please try again'
+      });
+
+      setLoading(false);
+    }
   };
 
-  if (withdrawLoading) {
+  if (loading) {
     return <Loader />;
   }
 
