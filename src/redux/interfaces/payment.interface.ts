@@ -10,6 +10,5 @@ export interface IPayment {
 
 export interface IPaymentPayload {
   userId: number;
-  paymentId: number;
   amount: number;
 }

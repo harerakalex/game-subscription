@@ -1,21 +1,26 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import axios from 'axios';
-import { KeyboardAvoidingView } from 'react-native';
-import * as WebBrowser from 'expo-web-browser';
+import { Alert, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { FontAwesome } from '@expo/vector-icons';
 
 import CustomAlert from '../../components/CustomAlert';
 import Background from '../../components/reusable/Background';
 import Button from '../../components/reusable/Button';
 import InputBox from '../../components/reusable/InputBox';
 import { Text } from '../../components/reusable/styled';
-import { Container, KeyboardStyles } from './styles';
-import { IInvoiceReturn } from '../../redux/interfaces/paynow.interface';
+import { Container, CopyableRow, KeyboardStyles, QRCodeContainer, QRCodeImage } from './styles';
 import Loader from '../../components/reusable/Loader';
 import { theme } from '../../theme';
-import { NOW_PAYMENT_API_KEY } from '../../constants/environment';
-import { IPayment, IPaymentPayload } from '../../redux/interfaces/payment.interface';
+import {
+  BACKEND_URL,
+  BLOCK_CHAIN_API,
+  BLOCK_CHAIN_GAP_LIMIT,
+  BLOCK_CHAIN_XPUB,
+  QR_CODE_URL
+} from '../../constants/environment';
+import { IPaymentPayload } from '../../redux/interfaces/payment.interface';
 import { postRequest } from '../../utils';
 import { RootState } from '../../redux';
 
@@ -23,8 +28,7 @@ const PaymentScreen: FC = () => {
   const [price_amount, setPriceAmount] = useState<string>();
   const [error, setError] = useState<any>();
   const [loading, setLoading] = useState(false);
-  const [invoice, setInvoice] = useState<IInvoiceReturn>();
-  const [copiedText, setCopiedText] = React.useState('');
+  const [invoice, setInvoice] = useState<any>();
 
   const { user } = useSelector((state: RootState) => state.users);
 
@@ -45,30 +49,24 @@ const PaymentScreen: FC = () => {
 
     try {
       setLoading(true);
-      const data = await axios.post(
-        'https://api.nowpayments.io/v1/invoice',
-        {
-          price_amount: price_amount,
-          price_currency: 'usd'
-        },
-        {
-          headers: {
-            'x-api-key': NOW_PAYMENT_API_KEY,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-      const result: IInvoiceReturn = Array.isArray(data) ? data[0].data : data.data;
       const payload: IPaymentPayload = {
         userId: user?.id as number,
-        amount: parseFloat(price_amount),
-        paymentId: result.id
+        amount: parseFloat(price_amount)
       };
 
-      await savePayment(payload);
+      const createPayment = await savePayment(payload);
+      const paymentResponse = Array.isArray(createPayment)
+        ? createPayment[0].data
+        : createPayment.data;
+      const encodeCBURL = encodeURIComponent(
+        `${BACKEND_URL}/payment/deposit?paymentId=${paymentResponse.paymentId}`
+      );
+
+      const blockChainURL = `https://api.blockchain.info/v2/receive?xpub=${BLOCK_CHAIN_XPUB}&callback=${encodeCBURL}/&key=${BLOCK_CHAIN_API}&gap_limit=${BLOCK_CHAIN_GAP_LIMIT}`;
+      const data = await axios.get(blockChainURL);
 
       setLoading(false);
-      setInvoice(result);
+      setInvoice(data.data);
     } catch (err) {
       const error = Array.isArray(err) ? err[0] : err;
       const { data } = error.response;
@@ -77,12 +75,10 @@ const PaymentScreen: FC = () => {
     }
   };
 
-  const handleOpenWithWebBrowser = () => {
-    if (invoice) WebBrowser.openBrowserAsync(invoice?.invoice_url);
-  };
-
   const copyToClipboard = () => {
-    if (invoice) Clipboard.setString(invoice?.invoice_url);
+    if (invoice) Clipboard.setString(invoice.address);
+
+    Alert.alert('Copied to clipboard', '', [{ text: 'OK' }]);
   };
 
   if (loading) {
@@ -93,32 +89,25 @@ const PaymentScreen: FC = () => {
     <Background>
       {invoice ? (
         <Container>
-          <Text size={17} marginBottom={20} marginTop={15}>
-            Press the bellow link or button to complete payment and you can also copy the link to
-            clipboard
+          <Text size={17} marginBottom={30} marginTop={15}>
+            Pay exactly {price_amount} <Text textTransform="uppercase">USD</Text>. Copy address or
+            scan the QR code to process payment.
           </Text>
-          <Text>{copiedText}</Text>
-          <Text
-            textTransform="none"
-            style={{ textDecorationColor: theme.colors.white, textDecorationLine: 'underline' }}
-            size={17}
-            marginBottom={20}
-            marginTop={15}
-            onPress={handleOpenWithWebBrowser}
-          >
-            {invoice.invoice_url}
-          </Text>
-          <Button
-            bgColor="blue"
-            label="Press here to preceed"
-            pressHandler={handleOpenWithWebBrowser}
-            marginTop="25px"
-          />
-          <Button
-            label="Press here to copy to Clipboard"
-            pressHandler={copyToClipboard}
-            marginTop="25px"
-          />
+          <CopyableRow>
+            <Text color={theme.colors.white} weight="bold">
+              {invoice.address}
+            </Text>
+            <TouchableOpacity onPress={copyToClipboard}>
+              <FontAwesome name="copy" size={24} color={theme.colors.white} />
+            </TouchableOpacity>
+          </CopyableRow>
+          <QRCodeContainer>
+            <QRCodeImage
+              source={{
+                uri: `${QR_CODE_URL}&chl=${invoice.address}`
+              }}
+            />
+          </QRCodeContainer>
         </Container>
       ) : (
         <KeyboardAvoidingView behavior={'height'} enabled style={KeyboardStyles}>
