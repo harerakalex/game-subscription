@@ -18,7 +18,7 @@ const BottomButtons: FC<Props> = props => {
   const onShare = async () => {
     try {
       await Share.share({
-        message: 'https://bit.ly/3KYNa03'
+        message: 'https://bit.ly/37AXpcq'
       });
     } catch (error: any) {
       alert(error.message);
