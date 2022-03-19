@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import axios from 'axios';
 import { Alert, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { useSelector } from 'react-redux';
@@ -13,13 +12,7 @@ import { Text } from '../../components/reusable/styled';
 import { Container, CopyableRow, KeyboardStyles, QRCodeContainer, QRCodeImage } from './styles';
 import Loader from '../../components/reusable/Loader';
 import { theme } from '../../theme';
-import {
-  BACKEND_URL,
-  BLOCK_CHAIN_API,
-  BLOCK_CHAIN_GAP_LIMIT,
-  BLOCK_CHAIN_XPUB,
-  QR_CODE_URL
-} from '../../constants/environment';
+import { QR_CODE_URL } from '../../constants/environment';
 import { IPaymentPayload } from '../../redux/interfaces/payment.interface';
 import { postRequest } from '../../utils';
 import { RootState } from '../../redux';
@@ -55,18 +48,10 @@ const PaymentScreen: FC = () => {
       };
 
       const createPayment = await savePayment(payload);
-      const paymentResponse = Array.isArray(createPayment)
-        ? createPayment[0].data
-        : createPayment.data;
-      const encodeCBURL = encodeURIComponent(
-        `${BACKEND_URL}/payment/deposit?paymentId=${paymentResponse.paymentId}`
-      );
-
-      const blockChainURL = `https://api.blockchain.info/v2/receive?xpub=${BLOCK_CHAIN_XPUB}&callback=${encodeCBURL}/&key=${BLOCK_CHAIN_API}&gap_limit=${BLOCK_CHAIN_GAP_LIMIT}`;
-      const data = await axios.get(blockChainURL);
+      const data = Array.isArray(createPayment) ? createPayment[0].data : createPayment.data;
 
       setLoading(false);
-      setInvoice(data.data);
+      setInvoice(data.bitcoin);
     } catch (err) {
       const error = Array.isArray(err) ? err[0] : err;
       const { data } = error.response;
